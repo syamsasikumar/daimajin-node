@@ -2,7 +2,7 @@ var request = require('request');
 var http = require('http');
 var port = process.env.PORT || 8080;
 var api_key = '2b8c09380433776e2676d7a7ef694d48';// @TODO: hide me !
-var movie_url = 'http://api.themoviedb.org/3/search/movie?api_key='+ api_key; //RT movie query api
+var movie_url = 'http://api.themoviedb.org/3/search/movie?api_key='+ api_key + '&search_type=ngram'; //RT movie query api
 var resource_url = 'http://api.themoviedb.org/3/movie/<resource>?api_key=' + api_key; //RT movie resource api
 var url = require('url');
 
