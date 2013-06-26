@@ -3,7 +3,7 @@ var http = require('http');
 var port = process.env.PORT || 8081;
 var api_key = '2b8c09380433776e2676d7a7ef694d48';// @TODO: hide me !
 var movie_url = 'http://api.themoviedb.org/3/search/movie?api_key='+ api_key + '&search_type=ngram'; //TMDB movie query api
-var resource_url = 'http://api.themoviedb.org/3/movie/<resource>?api_key=' + api_key + '&append_to_response=cast,trailers,similar_movies'; //TMDB movie resource api
+var resource_url = 'http://api.themoviedb.org/3/movie/<resource>?api_key=' + api_key + '&append_to_response=casts,trailers,similar_movies'; //TMDB movie resource api
 var conf_url = 'http://api.themoviedb.org/3/configuration?api_key=' + api_key; //TMDB movie resource api
 var pop_url = 'http://api.themoviedb.org/3/movie/popular?api_key=' + api_key;
 var url = require('url');
