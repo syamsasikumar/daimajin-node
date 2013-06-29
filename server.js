@@ -6,6 +6,7 @@ var express = require('express'),
     movies = require('./routes/movies'),
     lists = require('./routes/lists'),
     users = require('./routes/users');
+
  
 var app = express();
 
@@ -26,6 +27,7 @@ app.get('/movies/conf', movies.conf);
 app.get('/movies/popular', movies.popular);
 app.get('/movies/search', movies.search);
 app.get('/movies/:id', movies.movie);
+app.get('/movies/casts/:id', movies.casts);
 
 //TODO:
 //app.post('/login', auth.login);

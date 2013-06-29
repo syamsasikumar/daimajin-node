@@ -15,6 +15,11 @@ var send = function(res, body){
 exports.conf = function(req, res){
   client.call(app_global.urls.conf, headers, res, send);
 }
+
+exports.casts = function(req, res){
+  client.call(app_global.urls.person.replace('<resource>', req.params.id), headers, res, send);
+}
+
 exports.popular = function(req, res){
   client.call(app_global.urls.popular, headers, res, send);
 }
