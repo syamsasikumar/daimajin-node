@@ -11,7 +11,7 @@ app_global.urls = {
   movie : 'http://api.themoviedb.org/3/movie/<resource>?api_key=' + app_global.api_key + '&append_to_response=casts,trailers,similar_movies',
   conf : 'http://api.themoviedb.org/3/configuration?api_key=' + app_global.api_key,
   popular : 'http://api.themoviedb.org/3/movie/popular?api_key=' + app_global.api_key,
-  person : 'http://api.themoviedb.org/3/person/<resource>?api_key=' + app_global.api_key
+  person : 'http://api.themoviedb.org/3/person/<resource>?api_key=' + app_global.api_key + '&append_to_response=credits'
 };
 
 module.exports = app_global;
