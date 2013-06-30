@@ -2,10 +2,14 @@
 * Movie related api calls
 */
 var app_global = require('../helpers/app_global');
+var database = require('../helpers/database').database;
 var client = require('../helpers/client');
 var headers = { 
   accept: 'application/json' 
 };
+var db = new database();
+var userCollection = db.getCollection('test');
+
 
 //Response callback
 var send = function(res, body){
@@ -13,6 +17,12 @@ var send = function(res, body){
 }
 
 exports.conf = function(req, res){
+  userCollection.insert({'1': 'blah'}, {safe: true}, function(er,rs) {
+    console.log(er);
+  });
+  userCollection.insert({'2': 'blah'}, {safe: true}, function(er,rs) {
+    console.log(er);
+  });
   client.call(app_global.urls.conf, headers, res, send);
 }
 
