@@ -10,6 +10,8 @@ var express = require('express'),
  
 var app = express();
 
+
+
 // global set response headers
 app.get('/*',function(req,res,next){
     res.set({
@@ -18,6 +20,21 @@ app.get('/*',function(req,res,next){
       'Access-Control-Allow-Headers' : 'Origin, X-Requested-With, Content-Type, Accept'
     });
     next();
+});
+
+
+var mongo = require('mongodb');
+
+var mongoUri = process.env.MONGOLAB_URI || 
+  process.env.MONGOHQ_URL || 
+  'mongodb://daimajin:daimajin123@ds033828.mongolab.com:33828/daimajin'; 
+
+mongo.Db.connect(mongoUri, function (err, db) {
+  db.collection('test', function(er, collection) {
+    collection.insert({'mykey': 'myvalue'}, {safe: true}, function(er,rs) {
+      console.log(er);
+    });
+  });
 });
 
 app.listen(app_global.port);
