@@ -213,5 +213,9 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+##############
+project
+#############
 node_modules/
 conf.js
