@@ -53,7 +53,7 @@ exports.register = function(req, res){
           if(item){
             res.send({code:1, status:'user already exists'});
           }else{
-            collection.insert({name:name, pass:pass}, function(err, rec){
+            collection.insert([{name:name, pass:pass}], function(err, rec){
               req.session.user_id = rec[0]._id;
               res.send({code:0, status:'user registered successfully', '_id':rec[0]._id});
             })
