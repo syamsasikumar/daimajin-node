@@ -3,7 +3,6 @@
 */
 var request = require('request');
 exports.call = function(uri, headers, res, send){
-  console.log(uri);
   request(
   {
     uri: uri,

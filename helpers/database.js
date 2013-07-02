@@ -3,43 +3,44 @@
 */
 var mongodb = require('mongodb');
 
-function database(){
-  this.url = 'ds033828.mongolab.com';
-  this.port = 33828;
-  this.user='daimajin';
-  this.pass='daimajin123';
-  this.db_name = 'daimajin';
-  this.db = undefined;
+var database = function(){
+  this.conn = undefined;
+}
 
-  this.init = function(){
-    var server = new mongodb.Server(this.url, this.port, {
+database.prototype.getCollection = function(collectionName, callback){
+  var conf = require('./conf');
+  if(this.conn == undefined){
+    var server = new mongodb.Server(conf.mongo_config.url, conf.mongo_config.port, {
       auto_reconnect: true
     });
     var that = this;
-    this.db = new mongodb.Db(this.db_name, server);
-    this.db.open(function(err, db) {
+    this.conn = new mongodb.Db(conf.mongo_config.db_name, server);
+    this.conn.open(function(err, conn) {
       if( err ) {
         console.log(err);
-        return false;
+        return;
       }
-      that.db = db;
-      console.log('Database connected');
-      that.db.authenticate(that.user, that.pass, function(err) {
+      that.conn = conn;
+      that.conn.authenticate(conf.mongo_config.user, conf.mongo_config.pass, function(err) {
         if (err) {
-          console.log(err);
-          return false;
+        console.log(err);
+        return;
         }
-        console.log('Database user authenticated');
+        that._fetch(that.conn, collectionName, callback);
       });
     });
+  }else{
+    this._fetch(this.conn, collectionName, callback);
   }
+  this._fetch(this.conn, collectionName, callback);
 }
 
-database.prototype.getCollection = function(collectionName){
-  if(this.db == undefined){
-    this.init();
+database.prototype._fetch = function(conn, collectionName, callback){
+  if(conn){
+    callback(new mongodb.Collection(conn, collectionName));
+  }else{
+    callback(false);
   }
-  return new mongodb.Collection(this.db, collectionName);
 }
 
 exports.database = database;
