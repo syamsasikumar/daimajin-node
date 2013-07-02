@@ -3,8 +3,8 @@
 */
 var conf = {
   port : (process.env.PORT || 8081),
-  api_key : '2b8c09380433776e2676d7a7ef694d48', //@hide-me!
-  secret: 'daimajin123'
+  api_key : <api_key>, //@hide-me!
+  secret: <secret>
 }
 
 conf.urls = {
@@ -16,11 +16,11 @@ conf.urls = {
 };
 
 conf.mongo_config = {
-  url : 'ds033828.mongolab.com',
-  port : 33828,
-  user : 'daimajin',
-  pass : 'daimajin123',
-  db_name : 'daimajin'
+  url : <url>,
+  port : <port>,
+  user : <user>,
+  pass : <pass>,
+  db_name : <dbname>
 }
 
 module.exports = conf;
