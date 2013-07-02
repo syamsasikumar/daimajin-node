@@ -5,8 +5,7 @@
     "request": "2.x.x",
     "express": "3.x",
     "mongodb": "x.x.x",
-    "crypto" : "0.0.3",
-    "q" : "0.9.6"
+    "crypto" : "0.0.3"
   },
   "engines": {
     "node": "0.10.x",

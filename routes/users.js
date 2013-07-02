@@ -12,7 +12,7 @@ var db = new database();
 
 exports.login = function(req, res){
   //var name = req.body.name;
-  //var pass = crypto.createHash('md5').update(req.body.pass).digest("hex");
+  //var pass = (req.body.pass != undefined)? crypto.createHash('md5').update(req.body.pass).digest("hex"): '';
   var name = req.query.name;
   var pass = ( req.query.pass != undefined )? crypto.createHash('md5').update(req.query.pass).digest("hex"): undefined;
   if(name != undefined && pass != undefined){
@@ -23,7 +23,8 @@ exports.login = function(req, res){
             res.send({code:1, status:'error'});
           }
           if(item){
-            res.send({code:0, status:'user logged in'});
+            req.session.user_id = item._id;
+            res.send({code:0, status:'user logged in', '_id':item._id});
           }else{
             res.send({code:1, status:'error'});
           }
@@ -39,7 +40,7 @@ exports.login = function(req, res){
 
 exports.register = function(req, res){
   //var name = req.body.name;
-  //var pass = crypto.createHash('md5').update(req.body.pass).digest("hex");
+  //var pass = (req.body.pass != undefined)? crypto.createHash('md5').update(req.body.pass).digest("hex"): '';
   var name = req.query.name;
   var pass = ( req.query.pass != undefined )? crypto.createHash('md5').update(req.query.pass).digest("hex"): undefined;
   if(name != undefined && pass != undefined && req.query.pass == req.query.cpass){
@@ -54,7 +55,7 @@ exports.register = function(req, res){
           }else{
             collection.insert({name:name, pass:pass}, function(err, rec){
               req.session.user_id = rec[0]._id;
-              res.send({code:0, status:'user registered successfully'});
+              res.send({code:0, status:'user registered successfully', '_id':rec[0]._id});
             })
           }
           
