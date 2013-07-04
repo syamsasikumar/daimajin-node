@@ -20,21 +20,21 @@ exports.login = function(req, res){
       if(collection){
         collection.findOne({name:name, pass:pass}, {_id:1, name:1}, function(err, item){
           if(err){
-            res.send({code:1, status:'login error'});
+            res.send({code:1, status:'Login error'});
           }
           if(item){
             req.session.user_id = item._id;
-            res.send({code:0, status:'user logged in', '_id':item._id, 'name':item.name});
+            res.send({code:0, status:'User logged in', '_id':item._id, 'name':item.name});
           }else{
             res.send({code:1, status:'Wrong username / password'});
           }
         });
       }else{
-        res.send({code:1, status:'login error'});
+        res.send({code:1, status:'Login error'});
       }
     });
   }else{
-    res.send({code:1, status:'login error'});
+    res.send({code:1, status:'Login error'});
   }
 }
 
@@ -48,24 +48,28 @@ exports.register = function(req, res){
       if(collection){
         collection.findOne({name:name}, function(err, item){
           if(err){
-            res.send({code:1, status:'registration error'});
+            res.send({code:1, status:'Registration error'});
           }
           if(item){
-            res.send({code:1, status:'user already exists'});
+            res.send({code:1, status:'User already exists'});
           }else{
             collection.insert([{name:name, pass:pass}], function(err, rec){
               req.session.user_id = rec[0]._id;
-              res.send({code:0, status:'user registered successfully', '_id':rec[0]._id, 'name':name });
+              res.send({code:0, status:'User registered successfully', '_id':rec[0]._id, 'name':name });
             })
           }
           
         });
       }else{
-        res.send({code:1, status:'registration error'});
+        res.send({code:1, status:'Registration error'});
       }
     });
   }else{
-    res.send({code:1, status:'registration error'});
+    if(req.query.pass != req.query.cpass){
+      res.send({code:1, status:'Password and confirm password dont match'});
+    }else{
+      res.send({code:1, status:'Registration error'});
+    }
   }
 }
 
