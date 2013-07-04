@@ -20,21 +20,21 @@ exports.login = function(req, res){
       if(collection){
         collection.findOne({name:name, pass:pass}, {_id:1, name:1}, function(err, item){
           if(err){
-            res.send({code:1, status:'error'});
+            res.send({code:1, status:'login error'});
           }
           if(item){
             req.session.user_id = item._id;
             res.send({code:0, status:'user logged in', '_id':item._id, 'name':item.name});
           }else{
-            res.send({code:1, status:'error'});
+            res.send({code:1, status:'login error'});
           }
         });
       }else{
-        res.send({code:1, status:'error'});
+        res.send({code:1, status:'login error'});
       }
     });
   }else{
-    res.send({code:1, status:'error'});
+    res.send({code:1, status:'login error'});
   }
 }
 
@@ -48,7 +48,7 @@ exports.register = function(req, res){
       if(collection){
         collection.findOne({name:name}, function(err, item){
           if(err){
-            res.send({code:1, status:'error'});
+            res.send({code:1, status:'registration error'});
           }
           if(item){
             res.send({code:1, status:'user already exists'});
@@ -61,11 +61,11 @@ exports.register = function(req, res){
           
         });
       }else{
-        res.send({code:1, status:'error'});
+        res.send({code:1, status:'registration error'});
       }
     });
   }else{
-    res.send({code:1, status:'error'});
+    res.send({code:1, status:'registration error'});
   }
 }
 
