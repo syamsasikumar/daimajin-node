@@ -3,7 +3,7 @@
 */
 var conf = {
   port : (process.env.PORT || 8081),
-  api_key : '2b8c09380433776e2676d7a7ef694d48' //@hide-me!
+  api_key : '2b8c09380433776e2676d7a7ef694d48', //@hide-me!
   secret: 'daimajin123'
 }
 
