@@ -26,7 +26,7 @@ exports.login = function(req, res){
             req.session.user_id = item._id;
             res.send({code:0, status:'user logged in', '_id':item._id, 'name':item.name});
           }else{
-            res.send({code:1, status:'login error'});
+            res.send({code:1, status:'Wrong username / password'});
           }
         });
       }else{
