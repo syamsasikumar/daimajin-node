@@ -43,4 +43,8 @@ database.prototype._fetch = function(conn, collectionName, callback){
   }
 }
 
+database.prototype.getObjectId = function(id){
+  return new mongodb.ObjectID(id);
+}
+
 exports.database = database;

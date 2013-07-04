@@ -74,7 +74,7 @@ exports.user = function(req, res){
   if(id){
     db.getCollection(collectionName, function(collection){
       if(collection){
-        collection.findOne({_id: id}, {_id:1, name:1}, function(err, item){
+        collection.findOne({_id: db.getObjectId(id)}, {_id:1, name:1}, function(err, item){
           if(err){
             res.send({code:1, status:'error'});
           }
