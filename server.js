@@ -43,6 +43,7 @@ app.get('/movies/:id', movies.movie);
 app.get('/movies/casts/:id', movies.casts);
 app.get('/users/login', users.login); // @TODO: change to post
 app.get('/users/register', users.register); // @TODO: change to post
+app.get('/users/:id', users.user);
 //TODO:
 
 //app.get('/users/ratings', users.ratings);

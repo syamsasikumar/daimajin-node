@@ -68,3 +68,28 @@ exports.register = function(req, res){
     res.send({code:1, status:'error'});
   }
 }
+
+exports.user = function(req, res){
+  var id = req.params.id;
+  if(id){
+    db.getCollection(collectionName, function(collection){
+      if(collection){
+        collection.findOne({_id: id}, {_id:1, name:1}, function(err, item){
+          if(err){
+            res.send({code:1, status:'error'});
+          }
+          if(item){
+            req.session.user_id = item._id;
+            res.send({code:0, status:'user data found', '_id':item._id, 'name':item.name});
+          }else{
+            res.send({code:1, status:'error'});
+          }
+        });
+      }else{
+        res.send({code:1, status:'error'});
+      }
+    });
+  }else{
+    res.send({code:1, status:'error'});
+  }
+}
