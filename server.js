@@ -4,7 +4,8 @@ var express = require('express'),
     conf = require('./helpers/conf'),
     movies = require('./routes/movies'),
     lists = require('./routes/lists'),
-    users = require('./routes/users');
+    users = require('./routes/users'),
+    crypto = require("crypto");
 
  
 var app = express();
@@ -25,7 +26,8 @@ var setHeaders = function(req, res){
 }
 
 function checkAuth(req, res, next) {
-  if (!req.session.user_id) {
+  var token = (req.body.uid != undefined)? crypto.createHash('md5').update(req.body.uid).digest("hex"): '';
+  if (req.body.token != token) {
     res.send('You are not authorized to view this page');
   } else {
     //res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
@@ -74,6 +76,9 @@ app.get('/movies/casts/:id', movies.casts);
 app.post('/users/login', users.login);
 app.post('/users/register', users.register);
 app.get('/users/:id', users.user);
+app.get('/users/ratings/:id', ratings.getRatings);
+app.put('/users/ratings/', checkAuth, ratings.addRating);
+app.delete('/users/ratings/', checkAuth, ratings.deleteRating);
 //TODO:
 
 //app.get('/users/ratings', users.ratings);
