@@ -14,23 +14,53 @@ app.use(express.session({
   secret: conf.secret
 }));
 
+var setHeaders = function(req, res){
+    res.set({
+    'Content-Type': 'application/json', 
+    'Access-Control-Allow-Origin': '*', 
+    'Access-Control-Allow-Headers' : 'Origin, X-Requested-With, Content-Type, Accept',
+    'Access-Control-Allow-Methods' : 'POST, GET, OPTIONS, PUT, DELETE',
+    'Access-Control-Max-Age': '1728000'
+  });
+}
+
 function checkAuth(req, res, next) {
   if (!req.session.user_id) {
     res.send('You are not authorized to view this page');
   } else {
-    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    //res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     next();
   }
 }
 
 // global set response headers
+app.options('/*',function(req,res,next){
+  setHeaders(req, res);
+  res.send('');
+});
+
+// global set response headers
 app.get('/*',function(req,res,next){
-    res.set({
-      'Content-Type': 'application/json', 
-      'Access-Control-Allow-Origin': '*', 
-      'Access-Control-Allow-Headers' : 'Origin, X-Requested-With, Content-Type, Accept'
-    });
-    next();
+  setHeaders(req, res);
+  next();
+});
+
+// global set response headers
+app.put('/*',function(req,res,next){
+  setHeaders(req, res);
+  next();
+});
+
+// global set response headers
+app.post('/*',function(req,res,next){
+  setHeaders(req, res);
+  next();
+});
+
+// global set response headers
+app.delete('/*',function(req,res,next){
+  setHeaders(req, res);
+  next();
 });
 
 app.listen(conf.port);
@@ -41,8 +71,8 @@ app.get('/movies/popular', movies.popular);
 app.get('/movies/search', movies.search);
 app.get('/movies/:id', movies.movie);
 app.get('/movies/casts/:id', movies.casts);
-app.get('/users/login', users.login); // @TODO: change to post
-app.get('/users/register', users.register); // @TODO: change to post
+app.post('/users/login', users.login);
+app.post('/users/register', users.register);
 app.get('/users/:id', users.user);
 //TODO:
 

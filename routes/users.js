@@ -11,10 +11,8 @@ var headers = {
 var db = new database();
 
 exports.login = function(req, res){
-  //var name = req.body.name;
-  //var pass = (req.body.pass != undefined)? crypto.createHash('md5').update(req.body.pass).digest("hex"): '';
-  var name = req.query.name;
-  var pass = ( req.query.pass != undefined )? crypto.createHash('md5').update(req.query.pass).digest("hex"): undefined;
+  var name = req.body.name;
+  var pass = (req.body.pass != undefined)? crypto.createHash('md5').update(req.body.pass).digest("hex"): '';
   if(name != undefined && pass != undefined){
     db.getCollection(collectionName, function(collection){
       if(collection){
@@ -39,11 +37,9 @@ exports.login = function(req, res){
 }
 
 exports.register = function(req, res){
-  //var name = req.body.name;
-  //var pass = (req.body.pass != undefined)? crypto.createHash('md5').update(req.body.pass).digest("hex"): '';
-  var name = req.query.name;
-  var pass = ( req.query.pass != undefined )? crypto.createHash('md5').update(req.query.pass).digest("hex"): undefined;
-  if(name != undefined && pass != undefined && req.query.pass == req.query.cpass){
+  var name = req.body.name;
+  var pass = (req.body.pass != undefined)? crypto.createHash('md5').update(req.body.pass).digest("hex"): '';
+  if(name != undefined && pass != undefined && req.body.pass == req.body.cpass){
     db.getCollection(collectionName, function(collection){
       if(collection){
         collection.findOne({name:name}, function(err, item){
@@ -65,7 +61,7 @@ exports.register = function(req, res){
       }
     });
   }else{
-    if(req.query.pass != req.query.cpass){
+    if(req.body.pass != req.body.cpass){
       res.send({code:1, status:'Password and confirm password dont match'});
     }else{
       res.send({code:1, status:'Registration error'});
