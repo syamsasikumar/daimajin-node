@@ -32,7 +32,6 @@ database.prototype.getCollection = function(collectionName, callback){
   }else{
     this._fetch(this.conn, collectionName, callback);
   }
-  this._fetch(this.conn, collectionName, callback);
 }
 
 database.prototype._fetch = function(conn, collectionName, callback){
