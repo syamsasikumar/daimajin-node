@@ -4,6 +4,7 @@ var express = require('express'),
     conf = require('./helpers/conf'),
     movies = require('./routes/movies'),
     lists = require('./routes/lists'),
+    ratings = require('./routes/ratings'),
     users = require('./routes/users'),
     crypto = require("crypto");
 
