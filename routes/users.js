@@ -22,7 +22,7 @@ exports.login = function(req, res){
           }
           if(item){
             req.session.user_id = item._id;
-            res.send({code:0, status:'User logged in', _id:item._id, token: crypto.createHash('md5').update(item._id).digest("hex"), name:item.name, lists: {}, ratings:{}});
+            res.send({code:0, status:'User logged in', _id:item._id, token: crypto.createHash('md5').update(db.getObjectId(item._id)).digest("hex"), name:item.name, lists: {}, ratings:{}});
           }else{
             res.send({code:1, status:'Wrong username / password'});
           }
@@ -51,7 +51,7 @@ exports.register = function(req, res){
           }else{
             collection.insert([{name:name, pass:pass}], function(err, rec){
               req.session.user_id = rec[0]._id;
-              res.send({code:0, status:'User registered successfully', _id:rec[0]._id, token: crypto.createHash('md5').update(rec[0]._id).digest("hex"), name:name, lists: {}, ratings:{} });
+              res.send({code:0, status:'User registered successfully', _id:rec[0]._id, token: crypto.createHash('md5').update(db.getObjectId(rec[0]._id)).digest("hex"), name:name, lists: {}, ratings:{} });
             })
           }
           
