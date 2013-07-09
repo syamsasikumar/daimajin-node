@@ -78,8 +78,8 @@ app.post('/users/login', users.login);
 app.post('/users/register', users.register);
 app.get('/users/:id', users.user);
 app.get('/users/ratings/:id', ratings.getRatings);
-app.put('/users/ratings/', checkAuth, ratings.addRating);
-app.delete('/users/ratings/', checkAuth, ratings.deleteRating);
+app.put('/users/ratings', checkAuth, ratings.addRating);
+app.delete('/users/ratings', checkAuth, ratings.deleteRating);
 //TODO:
 
 //app.get('/users/ratings', users.ratings);

@@ -38,7 +38,6 @@ exports.login = function(req, res){
 exports.register = function(req, res){
   var name = req.body.name;
   var pass = (req.body.pass != undefined)? crypto.createHash('md5').update(req.body.pass).digest("hex"): '';
-  console.log('here');
   if(name != undefined && pass != undefined && req.body.pass == req.body.cpass){
     db.getCollection(collectionName, function(collection){
       if(collection){
@@ -49,12 +48,10 @@ exports.register = function(req, res){
           if(item){
             res.send({code:1, status:'User already exists'});
           }else{
-            console.log('out insert');
             var rec = {'name':name, 'pass':pass};
             collection.insert(rec, function(err, rec){
-              console.log('in insert');
               res.send({code:0, status:'User registered successfully', _id:rec[0]._id, token: crypto.createHash('md5').update( rec[0]._id.toString()).digest("hex"), name:name, lists: {}, ratings:{} });
-            })
+            });
           }
           
         });
@@ -82,7 +79,7 @@ exports.user = function(req, res){
           }
           if(item){
             req.session.user_id = item._id;
-            res.send({code:0, status:'user data found', '_id':item._id, 'name':item.name});
+            res.send({code:0, status:'user data found', '_id':item._id, token: crypto.createHash('md5').update(item._id.toString()).digest("hex"), 'name':item.name});
           }else{
             res.send({code:1, status:'error'});
           }
