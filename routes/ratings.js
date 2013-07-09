@@ -12,7 +12,7 @@ var conf = require('../helpers/conf'),
 
 var db = new database();
 
-exports.getRatings = function(req, res){
+exports.get = function(req, res){
   var id = req.params.id;
   if(id){
     db.getCollection(ratingsCollection, function(collection){
@@ -36,9 +36,10 @@ exports.getRatings = function(req, res){
   }
 }
 
-exports.addRating = function(req, res){
+exports.add = function(req, res){
   var id = req.body.uid;
   var rating = req.body.rating;
+  movie.add(rating.mid);
   if(id){
     db.getCollection(ratingsCollection, function(collection){
       if(collection){
@@ -69,7 +70,7 @@ exports.addRating = function(req, res){
   }
 }
 
-exports.deleteRating = function(req, res){
+exports.delete = function(req, res){
   var id = req.body.uid;
   var rating = JSON.parse(req.body.rating);
   if(id){

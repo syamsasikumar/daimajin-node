@@ -77,9 +77,9 @@ app.get('/movies/casts/:id', movies.casts);
 app.post('/users/login', users.login);
 app.post('/users/register', users.register);
 app.get('/users/:id', users.user);
-app.get('/users/ratings/:id', ratings.getRatings);
-app.put('/users/ratings', checkAuth, ratings.addRating);
-app.delete('/users/ratings', checkAuth, ratings.deleteRating);
+app.get('/users/ratings/:id', ratings.get);
+app.put('/users/ratings', checkAuth, ratings.add);
+app.delete('/users/ratings', checkAuth, ratings.delete);
 //TODO:
 
 //app.get('/users/ratings', users.ratings);
