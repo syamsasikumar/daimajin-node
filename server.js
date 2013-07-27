@@ -80,9 +80,9 @@ app.get('/users/:id', users.user);
 app.get('/users/ratings/:id', ratings.get);
 app.put('/users/ratings', checkAuth, ratings.add);
 app.delete('/users/ratings', checkAuth, ratings.delete);
+app.get('/users/lists/:id', lists.get);
+app.put('/users/lists', checkAuth, lists.add);
+app.delete('/users/lists', checkAuth, lists.delete);
 //TODO:
 
-//app.get('/users/ratings', users.ratings);
-//app.get('/users/lists', users.lists);
-//app.get('/lists/:id', lists.movies);
-//app.get('/users/friends', users.friends);
+//app.get('/users/stats/:id', users.friends);

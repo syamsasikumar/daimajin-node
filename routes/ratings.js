@@ -30,7 +30,8 @@ exports.get = function(req, res){
               var mids = Object.keys(JSON.parse(ratings));
               db.getCollection(moviesCollection, function(collection){
                 if(collection){
-                  for(var i=0; i<mids.length; i++) { mids[i] = parseInt(mids[i]); } // convert to array of ints
+                  var i=0;
+                  for(; i<mids.length; i++) { mids[i] = parseInt(mids[i]); } // convert to array of ints
                   collection.find({'id': { $in: mids}}, {id:1, belongs_to_collection:1, backdrop_path:1, genres:1 , original_title:1, poster_path:1, release_date:1, title:1 }).toArray(function(err, movies){
                     res.send({code:0, user:id, ratings: ratings, movies: movies});
                   });

@@ -49,11 +49,10 @@ exports.register = function(req, res){
             res.send({code:1, status:'User already exists'});
           }else{
             var rec = {'name':name, 'pass':pass};
-            collection.insert(rec, function(err, rec){
-              res.send({code:0, status:'User registered successfully', _id:rec[0]._id, token: crypto.createHash('md5').update( rec[0]._id.toString()).digest("hex"), name:name, lists: {}, ratings:{} });
+            collection.insert(rec, function(err, user){
+              res.send({code:0, status:'User registered successfully', _id:user[0]._id, token: crypto.createHash('md5').update( user[0]._id.toString()).digest("hex"), name:name, lists: {}, ratings:{} });
             });
           }
-          
         });
       }else{
         res.send({code:1, status:'Registration error'});
