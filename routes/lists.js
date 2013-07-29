@@ -15,9 +15,10 @@ var db = new database();
 
 exports.get = function(req, res){
   var id = req.params.id;
-  var lid = ('listId' in req.body)? req.body.listId: undefined;
+  var lid = ('lid' in req.query)? req.query.lid: undefined;
   //single list + fetch movies
   if(id && lid){
+    console.log('here');
     db.getCollection(listsCollection, function(collection){
       if(collection){
         collection.findOne({userId: id, _id: db.getObjectId(lid)}, {_id:1, name:1, description:1, movies:1, color:1}, function(err, item){
@@ -26,11 +27,11 @@ exports.get = function(req, res){
           }
           if(item){
             var list = item;
-            if(list.movies.length){
+            var movieIds = Object.keys(list.movies);
+            if(movieIds.length){
               db.getCollection(moviesCollection, function(collection){
                 if(collection){
                   var i=0;
-                  var movieIds = Object.keys(JSON.parse(list.movies));
                   for(; i<movieIds.length; i++) { movieIds[i] = parseInt(movieIds[i]); } // convert to array of ints
                   collection.find({'id': { $in: movieIds}}, {id:1, belongs_to_collection:1, backdrop_path:1, genres:1 , original_title:1, poster_path:1, release_date:1, title:1 }).toArray(function(err, movies){
                     res.send({ code:0, user:id, list:{ id:lid, name:list.name, description:list.description, color:list.color,  movies:movies}});
@@ -89,13 +90,13 @@ exports.add = function(req, res){
       movie.add(mid);
       db.getCollection(listsCollection, function(collection){
         if(collection){
-          collection.findOne({userId: id, _id: db.getObjectId(lid)}, {movies:1}, function(err, item){
+          collection.findOne({_id: db.getObjectId(lid)}, {movies:1}, function(err, item){
             if(err){
               res.send({code:1, message:'Operation failed'});
             }
-            var movieList = JSON.parse(item.movies);
+            var movieList = item.movies;
             movieList[mid] = mid;
-            collection.update({userId: id, _id: db.getObjectId(lid)}, {$set: {movies: JSON.stringify(movieList)}}, {}, function(err, item){
+            collection.update({userId: id, _id: db.getObjectId(lid)}, {$set: {movies: movieList}}, {}, function(err, item){
               if(err){
                 res.send({code:1, message:'Operation failed'});
               }else{
@@ -109,7 +110,7 @@ exports.add = function(req, res){
       //If no mid present the list data needs to be updated
       db.getCollection(listsCollection, function(collection){
         if(collection){
-          collection.update({userId: id, _id: db.getObjectId(lid)}, {$set: {name: list.name, description: list.description, color: list.color}}, {}, function(err, item){
+          collection.update({_id: db.getObjectId(lid)}, {$set: {name: list.name, description: list.description, color: list.color}}, {}, function(err, item){
             if(err){
               res.send({code:1, message:'Operation failed'});
             }else{
@@ -126,7 +127,7 @@ exports.add = function(req, res){
     db.getCollection(listsCollection, function(collection){
       if(collection){
         var movies = (list.movies)?list.movies:{};
-        collection.insert({userId: id, name: list.name, description: list.description, color: list.color, movies:movies}, {}, function(err, item){
+        collection.insert({userId: id, name: list.name, description: list.description, color: list.color, movies:movies, created: new Date()}, {}, function(err, item){
           if(err){
             res.send({code:1, message:'Operation failed'});
           }
@@ -145,8 +146,25 @@ exports.delete = function(req, res){
   var mid = ('mid' in req.body)? req.body.mid: undefined;
   var lid = ('lid' in req.body)? req.body.lid: undefined;
   //single list - delete movie from list
-  if(id && lid & mid){
-
+  if(id && lid && mid){
+    db.getCollection(listsCollection, function(collection){
+      if(collection){
+        collection.findOne({userId: id, _id: db.getObjectId(lid)}, {movies:1}, function(err, item){
+          if(err){
+            res.send({code:1, message:'Operation failed'});
+          }
+          var movieList = item.movies;
+          delete movieList[mid];
+          collection.update({_id: db.getObjectId(lid)}, {$set: {movies: movieList}}, {}, function(err, item){
+            if(err){
+              res.send({code:1, message:'Operation failed'});
+            }else{
+              res.send({code:0, message:'List updated'});
+            }
+          });
+        });
+      }
+    });
   }else if(id && lid){
     //delete an entire list
     db.getCollection(listsCollection, function(collection){

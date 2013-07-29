@@ -48,7 +48,8 @@ exports.register = function(req, res){
           if(item){
             res.send({code:1, status:'User already exists'});
           }else{
-            var rec = {'name':name, 'pass':pass};
+            var created = new Date();
+            var rec = {'name':name, 'pass':pass, 'created': created};
             collection.insert(rec, function(err, user){
               res.send({code:0, status:'User registered successfully', _id:user[0]._id, token: crypto.createHash('md5').update( user[0]._id.toString()).digest("hex"), name:name, lists: {}, ratings:{} });
             });

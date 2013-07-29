@@ -27,7 +27,7 @@ exports.get = function(req, res){
             var ratings = item.ratings;
             if(getMovies && ratings){
               var movies = [];
-              var mids = Object.keys(JSON.parse(ratings));
+              var mids = Object.keys(ratings);
               db.getCollection(moviesCollection, function(collection){
                 if(collection){
                   var i=0;
@@ -67,15 +67,15 @@ exports.add = function(req, res){
             res.send({code:1, message:'Operation failed'});
           }
           if(item){
-            var ratings = JSON.parse(item.ratings);
+            var ratings = item.ratings;
             ratings[rating.mid] = rating.val;
-            collection.update({userId: id}, {$set: {ratings:JSON.stringify(ratings)}}, {}, function(err, item){
+            collection.update({userId: id}, {$set: {ratings:ratings}}, {}, function(err, item){
               res.send({code:0, message:'Rating added'});
             });
           }else{
             var ratings = {};
             ratings[rating.mid] = rating.val;
-            collection.insert({userId: id, ratings:JSON.stringify(ratings)}, function(err, item){
+            collection.insert({userId: id, ratings:ratings}, function(err, item){
               res.send({code:0, message:'Rating added'});
             });
           }
