@@ -34,14 +34,14 @@ exports.get = function(req, res){
                   var i=0;
                   for(; i<movieIds.length; i++) { movieIds[i] = parseInt(movieIds[i]); } // convert to array of ints
                   collection.find({'id': { $in: movieIds}}, {id:1, belongs_to_collection:1, backdrop_path:1, genres:1 , original_title:1, poster_path:1, release_date:1, title:1 }).toArray(function(err, movies){
-                    res.send({ code:0, user:id, list:{ id:lid, name:list.name, description:list.description, color:list.color,  movies:movies}});
+                    res.send({ code:0, user:id, list:{ _id:lid, name:list.name, description:list.description, color:list.color,  movies:movies}});
                   });
                 }else{
-                  res.send({ code:0, user:id, list:{ id:lid, name:list.name, description:list.description, color:list.color,  movies:list.movies}});
+                  res.send({ code:0, user:id, list:{ _id:lid, name:list.name, description:list.description, color:list.color,  movies:list.movies}});
                 }
               });
             }else{
-              res.send({ code:0, user:id, list:{ id:lid, name:list.name, description:list.description, color:list.color,  movies:list.movies}});
+              res.send({ code:0, user:id, list:{ _id:lid, name:list.name, description:list.description, color:list.color,  movies:list.movies}});
             }
             
           }else{
